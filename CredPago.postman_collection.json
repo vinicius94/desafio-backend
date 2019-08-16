@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "33cf5401-6b57-45ed-9ee2-dd8dfe69cbcd",
+		"_postman_id": "d223a677-8768-4743-b12e-9c90ed120b0b",
 		"name": "CredPago",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -91,7 +91,10 @@
 					"script": {
 						"id": "f8a588e7-f928-45d1-865b-7c7fa2d43108",
 						"exec": [
-							""
+							"var uuid = require('uuid');",
+							"var productID = uuid.v4();",
+							"",
+							"pm.globals.set(\"productID\", productID);"
 						],
 						"type": "text/javascript"
 					}
@@ -109,10 +112,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"product_id\": \"{{myUUID}}\",\n    \"artist\": \"Pink Floyd\",\n    \"year\": 1973,\n    \"album\": \"Dask Side of The Moon\",\n    \"price\": 250,\n    \"store\": \"Minha Loja de Discos\",\n    \"thumb\": \"https://images-na.ssl-images-amazon.com/images/I/61R7gJadP7L._SX355_.jpg\",\n    \"date\": \"26/11/2018\"\n}"
+					"raw": "{\n    \"product_id\": \"{{productID}}\",\n    \"artist\": \"Pink Floyd\",\n    \"year\": 1973,\n    \"album\": \"Dask Side of The Moon\",\n    \"price\": 250,\n    \"store\": \"Minha Loja de Discos\",\n    \"thumb\": \"https://images-na.ssl-images-amazon.com/images/I/61R7gJadP7L._SX355_.jpg\",\n    \"date\": \"26/11/2018\"\n}"
 				},
 				"url": {
-					"raw": "http://credpago/store/api/v1/product",
+					"raw": "http://credpago/store/api/v1/product?=",
 					"protocol": "http",
 					"host": [
 						"credpago"
@@ -142,7 +145,10 @@
 					"script": {
 						"id": "7d6294ac-bf02-4d31-9fb3-587eb58d1571",
 						"exec": [
-							""
+							"var uuid = require('uuid');",
+							"var cartID = uuid.v4();",
+							"",
+							"pm.globals.set(\"cartID\", cartID);"
 						],
 						"type": "text/javascript"
 					}
@@ -190,7 +196,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"cart_id\":\"{{myUUID}}\",\n   \"client_id\":\"fac3591c-9785-11e9-bc42-526af7764f64\",\n   \"product_id\":\"d2eda25e-9757-11e9-bc42-526af7764f64\",\n   \"date\":\"26/11/2018\",\n   \"time\":\"18:33:12\"\n}"
+					"raw": "{\n   \"cart_id\":\"{{cartID}}\",\n   \"client_id\":\"fac3591c-9785-11e9-bc42-526af7764f64\",\n   \"product_id\":\"{{productID}}\",\n   \"date\":\"26/11/2018\",\n   \"time\":\"18:33:12\"\n}"
 				},
 				"url": {
 					"raw": "http://credpago/store/api/v1/add_to_cart",
@@ -255,7 +261,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n   \"client_id\":\"fac3591c-9785-11e9-bc42-526af7764f64\",\r\n   \"cart_id\":\"c5b6c552-9757-11e9-bc42-526af7764f64\",\r\n   \"client_name\":\"John Snow\",\r\n   \"value_to_pay\":280,\r\n   \"credit_card\":{\r\n      \"number\":\"1234123412341234\",\r\n      \"cvv\":111,\r\n      \"exp_date\":\"06/22\",\r\n      \"card_holder_name\":\"John S\"\r\n   }\r\n}"
+					"raw": "{\r\n   \"client_id\":\"fac3591c-9785-11e9-bc42-526af7764f64\",\r\n   \"cart_id\":\"{{cartID}}\",\r\n   \"client_name\":\"John Snow\",\r\n   \"value_to_pay\":280,\r\n   \"credit_card\":{\r\n      \"number\":\"1234123412341234\",\r\n      \"cvv\":111,\r\n      \"exp_date\":\"06/22\",\r\n      \"card_holder_name\":\"John S\"\r\n   }\r\n}"
 				},
 				"url": {
 					"raw": "http://credpago/store/api/v1/buy",
@@ -389,10 +395,7 @@
 				"id": "41782922-0c81-4c06-b68a-0efefeabd005",
 				"type": "text/javascript",
 				"exec": [
-					"var uuid = require('uuid');",
-					"var myUUID = uuid.v4();",
-					"",
-					"pm.environment.set(\"myUUID\", myUUID);"
+					""
 				]
 			}
 		},
