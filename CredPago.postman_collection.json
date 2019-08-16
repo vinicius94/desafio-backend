@@ -1,0 +1,410 @@
+{
+	"info": {
+		"_postman_id": "33cf5401-6b57-45ed-9ee2-dd8dfe69cbcd",
+		"name": "CredPago",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0d442e25-8173-4755-bff3-b4629105ad1c",
+						"exec": [
+							"pm.test(\"A resposta deve ser OK\", function(){",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"A resposta deve ter corpo\", function(){",
+							"    pm.response.to.be.ok;",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"A resposta deve ter o formato predefinido\", function(){",
+							"    var jsonData = pm.response.json();",
+							"    ",
+							"    pm.expect(jsonData[0]).to.have.all.keys(\"product_id\", \"artist\", \"year\", \"album\", \"price\", \"store\", \"thumb\", \"date\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://credpago/store/api/v1/products",
+					"protocol": "http",
+					"host": [
+						"credpago"
+					],
+					"path": [
+						"store",
+						"api",
+						"v1",
+						"products"
+					]
+				},
+				"description": "Lista os produtos cadastrados"
+			},
+			"response": []
+		},
+		{
+			"name": "Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "06b0d70e-47e7-4c88-a973-7d833e78a7f1",
+						"exec": [
+							"pm.test(\"A resposta deve ser OK\", function(){",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"A resposta deve ter corpo\", function(){",
+							"    pm.response.to.be.ok;",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"A resposta deve ter o formato predefinido\", function(){",
+							"    var jsonData = pm.response.json();",
+							"    ",
+							"    pm.expect(jsonData[0]).to.have.all.keys(\"product_id\", \"artist\", \"year\", \"album\", \"price\", \"store\", \"thumb\", \"date\");",
+							"});",
+							"",
+							"pm.test(\"O retorno deve ser o produto cadastrado\", function(){",
+							"    var jsonData = pm.response.json();",
+							"    ",
+							"    pm.expect(jsonData[0]).to.have.property(\"product_id\", pm.environment.get(\"myUUID\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f8a588e7-f928-45d1-865b-7c7fa2d43108",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"product_id\": \"{{myUUID}}\",\n    \"artist\": \"Pink Floyd\",\n    \"year\": 1973,\n    \"album\": \"Dask Side of The Moon\",\n    \"price\": 250,\n    \"store\": \"Minha Loja de Discos\",\n    \"thumb\": \"https://images-na.ssl-images-amazon.com/images/I/61R7gJadP7L._SX355_.jpg\",\n    \"date\": \"26/11/2018\"\n}"
+				},
+				"url": {
+					"raw": "http://credpago/store/api/v1/product",
+					"protocol": "http",
+					"host": [
+						"credpago"
+					],
+					"path": [
+						"store",
+						"api",
+						"v1",
+						"product"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				},
+				"description": "Adiciona um produto"
+			},
+			"response": []
+		},
+		{
+			"name": "add_to_cart",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7d6294ac-bf02-4d31-9fb3-587eb58d1571",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "adc3bfa5-7081-4121-9066-5c9f50566bb7",
+						"exec": [
+							"pm.test(\"A resposta deve ser OK\", function(){",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"A resposta deve ter corpo\", function(){",
+							"    pm.response.to.be.ok;",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"A resposta deve ter o formato predefinido\", function(){",
+							"    var jsonData = pm.response.json();",
+							"    ",
+							"    pm.expect(jsonData[0]).to.have.all.keys(\"cart_id\", \"client_id\", \"product_id\", \"date\", \"time\");",
+							"});",
+							"",
+							"pm.test(\"O retorno deve ser o produto cadastrado\", function(){",
+							"    var jsonData = pm.response.json();",
+							"    ",
+							"    pm.expect(jsonData[0]).to.have.property(\"cart_id\", pm.environment.get(\"myUUID\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"cart_id\":\"{{myUUID}}\",\n   \"client_id\":\"fac3591c-9785-11e9-bc42-526af7764f64\",\n   \"product_id\":\"d2eda25e-9757-11e9-bc42-526af7764f64\",\n   \"date\":\"26/11/2018\",\n   \"time\":\"18:33:12\"\n}"
+				},
+				"url": {
+					"raw": "http://credpago/store/api/v1/add_to_cart",
+					"protocol": "http",
+					"host": [
+						"credpago"
+					],
+					"path": [
+						"store",
+						"api",
+						"v1",
+						"add_to_cart"
+					]
+				},
+				"description": "Adiciona ao carrinho"
+			},
+			"response": []
+		},
+		{
+			"name": "Buy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f8e3c293-dffc-48d5-9460-fade7d1664ca",
+						"exec": [
+							"pm.test(\"A resposta deve ser OK\", function(){",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"A resposta deve ter corpo\", function(){",
+							"    pm.response.to.be.ok;",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"A resposta deve ter o formato predefinido\", function(){",
+							"    var jsonData = pm.response.json();",
+							"    ",
+							"    pm.expect(jsonData[0]).to.have.all.keys(\"client_id\", \"order_id\", \"value\", \"date\", \"card_number\");",
+							"});",
+							"",
+							"pm.test(\"O retorno deve ser o produto cadastrado\", function(){",
+							"    var jsonData = pm.response.json();",
+							"    ",
+							"    pm.expect(jsonData[0]).to.have.property(\"client_id\", \"fac3591c-9785-11e9-bc42-526af7764f64\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"client_id\":\"fac3591c-9785-11e9-bc42-526af7764f64\",\r\n   \"cart_id\":\"c5b6c552-9757-11e9-bc42-526af7764f64\",\r\n   \"client_name\":\"John Snow\",\r\n   \"value_to_pay\":280,\r\n   \"credit_card\":{\r\n      \"number\":\"1234123412341234\",\r\n      \"cvv\":111,\r\n      \"exp_date\":\"06/22\",\r\n      \"card_holder_name\":\"John S\"\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "http://credpago/store/api/v1/buy",
+					"protocol": "http",
+					"host": [
+						"credpago"
+					],
+					"path": [
+						"store",
+						"api",
+						"v1",
+						"buy"
+					]
+				},
+				"description": "Realiza a compra"
+			},
+			"response": []
+		},
+		{
+			"name": "Histórico",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b1fbf2d0-9cdf-4615-b249-3d932853da15",
+						"exec": [
+							"pm.test(\"A resposta deve ser OK\", function(){",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"A resposta deve ter corpo\", function(){",
+							"    pm.response.to.be.ok;",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"A resposta deve ter o formato predefinido\", function(){",
+							"    var jsonData = pm.response.json();",
+							"    ",
+							"    pm.expect(jsonData[0]).to.have.all.keys(\"client_id\", \"order_id\", \"value\", \"date\", \"card_number\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://credpago/store/api/v1/history",
+					"protocol": "http",
+					"host": [
+						"credpago"
+					],
+					"path": [
+						"store",
+						"api",
+						"v1",
+						"history"
+					]
+				},
+				"description": "Busca todo o histórico"
+			},
+			"response": []
+		},
+		{
+			"name": "Histórico por cliente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5690df24-cc61-4969-a377-20257c0ee7ed",
+						"exec": [
+							"pm.test(\"A resposta deve ser OK\", function(){",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"A resposta deve ter corpo\", function(){",
+							"    pm.response.to.be.ok;",
+							"    pm.response.to.be.withBody;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"A resposta deve ter o formato predefinido\", function(){",
+							"    var jsonData = pm.response.json();",
+							"    ",
+							"    console.log(jsonData);",
+							"    ",
+							"    pm.expect(jsonData[0]).to.have.all.keys(\"client_id\", \"order_id\", \"value\", \"date\", \"card_number\");",
+							"});",
+							"",
+							"pm.test(\"O retorno deve ser do cliente solicitado\", function(){",
+							"    var jsonData = pm.response.json();",
+							"    ",
+							"    _.forEach(jsonData, function(item){",
+							"       pm.expect(item).to.have.property(\"client_id\", \"fac3591c-9785-11e9-bc42-526af7764f64\"); ",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://credpago/store/api/v1/history/fac3591c-9785-11e9-bc42-526af7764f64",
+					"protocol": "http",
+					"host": [
+						"credpago"
+					],
+					"path": [
+						"store",
+						"api",
+						"v1",
+						"history",
+						"fac3591c-9785-11e9-bc42-526af7764f64"
+					]
+				},
+				"description": "Exibe o histórico por id de cliente"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "41782922-0c81-4c06-b68a-0efefeabd005",
+				"type": "text/javascript",
+				"exec": [
+					"var uuid = require('uuid');",
+					"var myUUID = uuid.v4();",
+					"",
+					"pm.environment.set(\"myUUID\", myUUID);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0e80d044-9547-4ebe-8288-469ba3743360",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
